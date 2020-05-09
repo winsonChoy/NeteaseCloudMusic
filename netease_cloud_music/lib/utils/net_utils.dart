@@ -30,7 +30,7 @@ import 'custom_log_interceptor.dart';
 
 class NetUtils {
   static Dio _dio;
-  static final String baseUrl = 'http://118.24.63.15';
+  static final String baseUrl = 'http://192.168.43.68';
   static Future<List<InternetAddress>> _fm10s =
       InternetAddress.lookup("ws.acgvideo.com");
 
@@ -42,7 +42,7 @@ class NetUtils {
       ..interceptors.add(CookieManager(cj))
       ..interceptors
           .add(CustomLogInterceptor(responseBody: true, requestBody: true));
-    
+
     // 海外華人可使用 nondanee/UnblockNeteaseMusic
     (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
@@ -109,10 +109,11 @@ class NetUtils {
 
   /// 登录
   static Future<User> login(
-      BuildContext context, String phone, String password) async {
+      BuildContext context, String phone, String password,String countrycode) async {
     var response = await _get(context, '/login/cellphone', params: {
       'phone': phone,
       'password': password,
+      'countrycode':countrycode,
     });
 
     return User.fromJson(response.data);

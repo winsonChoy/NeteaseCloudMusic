@@ -78,6 +78,7 @@ class _LoginWidget extends StatefulWidget {
 class __LoginWidgetState extends State<_LoginWidget> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
+  final TextEditingController _countrycodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -130,6 +131,17 @@ class __LoginWidgetState extends State<_LoginWidget> {
                   color: Colors.grey,
                 )),
           ),
+          VEmptyView(40),
+          TextField(
+            controller: _countrycodeController,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                hintText: 'Country Code',
+                prefixIcon: Icon(
+                  Icons.add_location,
+                  color: Colors.grey,
+                )),
+          ),
           VEmptyView(120),
           Consumer<UserModel>(
             builder: (BuildContext context, UserModel value, Widget child) {
@@ -137,16 +149,20 @@ class __LoginWidgetState extends State<_LoginWidget> {
                 callback: () {
                   String phone = _phoneController.text;
                   String pwd = _pwdController.text;
+                  String countrycode = _countrycodeController.text;
                   if (phone.isEmpty || pwd.isEmpty) {
                     Utils.showToast('请输入账号或者密码');
                     return;
                   }
-                  value.login(
+                  value
+                      .login(
                     context,
                     phone,
                     pwd,
-                  ).then((value){
-                    if(value != null){
+                    countrycode,
+                  )
+                      .then((value) {
+                    if (value != null) {
                       Provider.of<PlayListModel>(context).user = value;
                       NavigatorUtil.goHomePage(context);
                     }
